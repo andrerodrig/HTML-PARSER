@@ -48,10 +48,10 @@ htmlparser https://www.google.com
 This will create a directory named `google` in the current working directory, containing:
 
 - `google.html`: The downloaded HTML content.
-- `flund_urls.txt`: A list of all extracted URLs.
-- `flund_srcs.txt`: A list of all extracted `src` attributes.
-- `flund_hrefs.txt`: A list of all extracted `href` attributes.
-- `flund_dnses.txt`: A list of all found DNS entries.
-- `flund_ipv4.txt`: A list of all found IP addresses.
-- `flund_ipv6.txt`: A list of all found IP addresses.
-- `flund_servers.txt`: Some other servers found.
+- `found_urls.txt`: A list of all extracted URLs.
+- `found_srcs.txt`: A list of all extracted `src` attributes.
+- `found_hrefs.txt`: A list of all extracted `href` attributes.
+- `found_dnses.txt`: A list of all found DNS entries.
+- `found_ipv4.txt`: A list of all found IP addresses.
+- `found_ipv6.txt`: A list of all found IP addresses.
+- `found_servers.txt`: Some other servers found.
