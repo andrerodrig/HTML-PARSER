@@ -14,10 +14,21 @@ A directory is created, based on the target domain to store the downloaded HTML 
 
 ## Installation
 
-1. Download the `htmlparser.sh` script.
-2. Grant execution permissions to the script:
+```bash
+git clone https://github.com/andrerodrig/HTML-PARSER.git
+cd htmlparser
+```
 
-   ```bash
-   chmod +x htmlparser.sh
-   ```
+Install with `./install.sh`:
 
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+## Uninstall
+
+```bash
+chmod +x uninstall.sh
+./uninstall.sh
+```
