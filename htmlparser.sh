@@ -25,12 +25,11 @@ html_content_name="$site_name.html"
 
 # Check if the string is provided as argument
 if [ "$1" == "" ]; then
-    echo -e "${RED}Usage: $0 <URL>${RESET}"
-    echo -e "${RED}Example: $0 https://www.example.com${RESET}"
+    echo -e "Usage: $0 <URL>"
+    echo -e "Example: $0 https://www.example.com"
     echo -e "$sep_line"
     exit 1
 fi
-
 
 
 # Save the info in a file if it's not saved yet.
@@ -52,7 +51,10 @@ function process() {
 
     local result=$(grep -oE "$pattern" "$file")
 
-    result=$(echo "$result" | cut -d " " -f 1 | awk -F "(>|&quot)" '{print $1}' | sed "s/\/\"/\"/" | sort | uniq)
+    result=$(
+        echo "$result" | cut -d " " -f 1 | awk -F "(>|&quot)" '{print $1}' |\
+        cut -d "\"" -f 2 | sed "s/\/$//g" | sort | uniq
+    )
     echo "$result"
 }
 
@@ -61,18 +63,35 @@ function save_and_print() {
     local content="$2"
     local filename="$3"
 
-    echo -e "${CYAN}$title:${RESET}"
-    echo "$content"
-    echo -e "${GREEN}Saving results...${RESET}"
+    echo -e "${CYAN}$title:${RESET} $(echo "$content" | wc -l) results found."
     echo "$content" > "$site_name/$filename"
-    echo -e "$sep_line"
 }
 
 
-matched_urls=$(process "\"https?://[^\"]+\"" "$html_content")
-matched_srcs=$(process "src=\"[^\"]+\"" "$html_content")
-matched_hrefs=$(process "href=\"[^\"]+\"" "$html_content")
+found_urls=$(process "https?://[^\"]+" "$html_content")
+found_srcs=$(process "src=\"[^\"]+\"" "$html_content")
+found_hrefs=$(process "href=\"[^\"]+\"" "$html_content")
 
-save_and_print "Matched urls" "$matched_urls" "mached_urls.txt"
-save_and_print "Matched srcs" "$matched_srcs" "mached_srcs.txt"
-save_and_print "Matched hrefs" "$matched_hrefs" "mached_hrefs.txt"
+found_dnses=$(echo "$found_urls" | awk -F "//" '{print $2}' | awk -F "(/|?)" '{print $1}' | sort | uniq)
+found_ips=$(
+    for domain in $(echo "$found_dnses"); do
+        host $domain;
+    done
+)
+
+found_ipv4=$(echo "$found_ips" | grep -oEi "([0-9]{1,3}\.){3}[0-9]{1,3}")
+found_ipv6=$(echo "$found_ips" | grep -oEi "([0-9a-f]{1,4}::?){2,7}[0-9a-f]{0,4}")
+found_servers=$(echo "$found_ips" | grep -oE "handled by [0-9]+ [a-zA-Z0-9.-]+" | awk '{print $4}')
+
+
+save_and_print "URLs" "$found_urls" "found_urls.txt"
+save_and_print "srcs" "$found_srcs" "found_srcs.txt"
+save_and_print "hrefs" "$found_hrefs" "found_hrefs.txt"
+save_and_print "DNSes" "$found_dnses" "found_dnses.txt"
+save_and_print "IPv4" "$found_ipv4" "found_ipv4.txt"
+save_and_print "IPv6" "$found_ipv6" "found_ipv6.txt"
+save_and_print "Servers" "$found_servers" "found_servers.txt"
+
+echo -e "$sep_line"
+echo -e "${GREEN}Results saved in:${RESET} $site_name/"
+
