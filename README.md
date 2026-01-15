@@ -36,6 +36,8 @@ chmod +x uninstall.sh
 ```
 
 ## Usage
+
+```
 htmlparser <URL>
 ```
 
