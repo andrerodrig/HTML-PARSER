@@ -9,6 +9,8 @@ A Bash script designed to download HTML content from a specified URL and parse i
   - Full URLs (`http` and `https` patterns).
   - Source attributes (`src="..."`).
   - Hyperlink references (`href="..."`).
+  - Found DNS list.
+  - IP Addresses (IPv4 and IPv6).
 
 A directory is created, based on the target domain to store the downloaded HTML and extracted lists.
 
