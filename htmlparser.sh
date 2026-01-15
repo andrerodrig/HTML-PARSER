@@ -73,15 +73,16 @@ found_srcs=$(process "src=\"[^\"]+\"" "$html_content")
 found_hrefs=$(process "href=\"[^\"]+\"" "$html_content")
 
 found_dnses=$(echo "$found_urls" | awk -F "//" '{print $2}' | awk -F "(/|?)" '{print $1}' | sort | uniq)
+filtered_dnses=$(echo "$found_dnses" | grep "$site_name")
 found_ips=$(
-    for domain in $(echo "$found_dnses"); do
+    for domain in $(echo "$filtered_dnses"); do
         host $domain;
     done
 )
 
 found_ipv4=$(echo "$found_ips" | grep -oEi "([0-9]{1,3}\.){3}[0-9]{1,3}")
 found_ipv6=$(echo "$found_ips" | grep -oEi "([0-9a-f]{1,4}::?){2,7}[0-9a-f]{0,4}")
-found_servers=$(echo "$found_ips" | grep -oE "handled by [0-9]+ [a-zA-Z0-9.-]+" | awk '{print $4}')
+found_servers=$(echo "$found_ips" | grep -oEi "handled by [0-9]+ [a-z0-9.-]+" | awk '{print $4}')
 
 
 save_and_print "URLs" "$found_urls" "found_urls.txt"
