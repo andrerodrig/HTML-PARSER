@@ -17,7 +17,7 @@ A directory is created, based on the target domain to store the downloaded HTML 
 ## Installation
 
 ```bash
-git clone https://github.com/andrerodrig/HTML-PARSER.git
+git clone https://github.com/andrerodrig/htmlparser.git
 cd htmlparser
 ```
 
