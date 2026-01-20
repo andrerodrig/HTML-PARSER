@@ -1,4 +1,5 @@
-# HTML Parser
+<img width="907" height="284" alt="image" src="https://github.com/user-attachments/assets/0720c7c0-1d4e-40d3-915a-343d0bf38b87" />
+
 
 A Bash script designed to download HTML content from a specified URL and parse it to extract URLs, `src` attributes, and `href` attributes. The results are organized and saved into a dedicated directory for the target site.
 
